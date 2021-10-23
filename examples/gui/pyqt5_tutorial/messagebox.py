@@ -14,7 +14,8 @@ Last edited: August 2017
 """
 
 import sys
-from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication
+from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QCalendarWidget
+from PyQt5.QtCore import QDate
 
 
 class Example(QWidget):
@@ -27,10 +28,22 @@ class Example(QWidget):
         
     def initUI(self):               
         
-        self.setGeometry(300, 300, 250, 150)        
-        self.setWindowTitle('Message box')    
+        cal=QCalendarWidget(self)
+        cal.clicked[QDate].connect(self.showDate)
+
+        self.msg = QMessageBox(self)
+        width=450
+        height=350
+        self.setGeometry(500, 500, width, height)    
+        cal.setGeometry(0, 0, width, height)       
+        self.setWindowTitle('Calendar')    
         self.show()
+
+    def showDate(self, date):
         
+        datestr="{} {}".format("Your Appointment is on:", date.toString())
+        self.msg.about(self,"Appointment",datestr)
+ 
         
     def closeEvent(self, event):
         
